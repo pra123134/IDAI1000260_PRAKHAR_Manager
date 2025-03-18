@@ -1,8 +1,4 @@
-import os
 import streamlit as st
-import datetime
-import google.auth
-import requests
 import google.generativeai as genai
 
 # ✅ Configure API Key securely
@@ -22,76 +18,94 @@ def get_ai_response(prompt, fallback_message="⚠️ AI response unavailable. Pl
     except Exception as e:
         return f"⚠️ AI Error: {str(e)}\n{fallback_message}"
 
-def get_event_recommendation():
-    today = datetime.datetime.today().strftime("%B %d")
-    prompt = f"""
-    Today is {today}. Identify any special occasion (e.g., Valentine's Day, Christmas, Thanksgiving) and recommend:
-    - A restaurant theme
-    - Ideal cuisine (Veg, Non-Veg, Vegan)
-    - Drinks (Soft Drinks, Mocktails, Cocktails, Beer)
-    - A dessert pairing
-    - A discount strategy based on demand trends
-    - A short marketing slogan
-    - AI-generated Instagram caption and trending hashtags
-    - AI-optimized lighting and music
-    - AI-driven sustainability strategies
-    - AI-suggested seating arrangement
-    - AI-predicted customer sentiment & demand
-    - AI-enhanced pricing strategy for discounts
-    - AI-recommended event entertainment options
-    - AI-suggested staff dress code for the theme
-    - AI-driven social media engagement tips
-    - AI-generated promotional email template
-    """
-    return get_ai_response(prompt, "⚠️ AI response unavailable. Please try again later.")
+# ✅ Streamlit UI Configuration
+st.set_page_config(page_title="Smart Restaurant Menu Management App", layout="wide")
 
-def get_reservation_recommendation(occasion, people, cuisine_type, drink_type, budget):
-    if not all([occasion, people, cuisine_type, drink_type, budget]):
-        return "⚠️ Please fill in all fields before generating a recommendation."
-    
-    prompt = f"""
-    A restaurant reservation has been made with:
-    - Occasion: {occasion}
-    - Guests: {people}
-    - Cuisine: {cuisine_type}
-    - Drinks: {drink_type}
-    - Budget: {budget}
-    
-    Recommend:
-    - A suitable event theme
-    - Decoration style
-    - Custom menu (Dishes, Drinks, Dessert Combo)
-    - Discount offer
-    - A unique marketing slogan
-    - Instagram caption & trending hashtags
-    - AI-powered seating optimization
-    - Allergy-friendly & diet-specific recommendations
-    - Sustainable dining strategies
-    - AI-generated personalized thank-you message
-    - AI-recommended music playlist
-    - AI-optimized table arrangements for group dynamics
-    - AI-driven guest experience enhancements
-    - AI-generated exclusive loyalty program offers
-    """
-    return get_ai_response(prompt, "⚠️ AI response unavailable. Please try again later.")
+st.title("🍽️ Smart Restaurant Menu Management with Gemini 1.5 Pro")
+st.write("🚀 Manage events, recommend menus, and optimize leftovers using GenAI.")
 
-st.set_page_config(page_title="AI-Powered Restaurant Manager", layout="wide")
-st.title("🍽️ AI-Powered Smart Restaurant Management")
+# 🎯 **Event Manager**
+st.header("🎉 Event Manager")
 
-st.header("📅 AI-Powered Event Recommendation for Today")
-if st.button("Generate Event Recommendation"):
-    st.text_area("Event Recommendation:", get_event_recommendation(), height=300)
-
-st.header("🎊 Custom AI-Powered Event Recommendation")
-
-occasion = st.text_input("🎉 Occasion (e.g., Birthday, Anniversary, Business Meeting)")
+occasion = st.text_input("🎊 Occasion (e.g., Birthday, Anniversary, Corporate Event)")
 people = st.number_input("👥 Number of Guests", min_value=1, value=2)
-cuisine_type = st.selectbox("🍽 Preferred Cuisine", ["Veg", "Non-Veg", "Vegan"])
-drink_type = st.selectbox("🍹 Preferred Drink", ["Soft Drinks", "Mocktails", "Cocktails", "Beer"])
-budget = st.text_input("💰 Budget Range")
+cuisine_type = st.selectbox("🍱 Cuisine Preference", ["Veg", "Non-Veg", "Vegan", "Mixed"])
+drink_type = st.selectbox("🍹 Drink Preference", ["Soft Drinks", "Mocktails", "Cocktails", "Beer", "Wine"])
+budget = st.text_input("💰 Budget Range (e.g., $100-$300)")
 
-if st.button("Generate Reservation Recommendation"):
-    st.text_area("Reservation Recommendation:", get_reservation_recommendation(occasion, people, cuisine_type, drink_type, budget), height=300)
+if st.button("✨ Generate Event Plan"):
+    if not all([occasion, people, cuisine_type, drink_type, budget]):
+        st.error("⚠️ Please fill in all fields before generating a recommendation.")
+    else:
+        prompt = f"""
+        Create an event plan for:
+        - Occasion: {occasion}
+        - Guests: {people}
+        - Cuisine: {cuisine_type}
+        - Drinks: {drink_type}
+        - Budget: {budget}
+        
+        Include:
+        - Menu recommendations
+        - Decoration style
+        - Discount strategies
+        - Marketing slogan
+        - Instagram caption with trending hashtags
+        - Sustainability tips
+        """
+        st.text_area("📋 Event Plan:", get_ai_response(prompt), height=300)
 
-st.write("\n🚀 Powered by Gemini AI")
+# 🍽️ **Food Menu Recommendation**
+st.header("🍴 Food Menu Recommendation")
 
+meal_type = st.selectbox("🍔 Meal Type", ["Breakfast", "Lunch", "Dinner", "Snack"])
+dietary_pref = st.selectbox("🥗 Dietary Preference", ["Vegetarian", "Non-Vegetarian", "Vegan", "Keto", "Gluten-Free"])
+spice_level = st.selectbox("🌶️ Spice Level", ["Mild", "Medium", "Spicy", "Extra Spicy"])
+
+if st.button("🔍 Recommend Food Menu"):
+    if not all([meal_type, dietary_pref, spice_level]):
+        st.error("⚠️ Please fill in all fields before generating a recommendation.")
+    else:
+        prompt = f"""
+        Generate a food menu recommendation for:
+        - Meal: {meal_type}
+        - Dietary Preference: {dietary_pref}
+        - Spice Level: {spice_level}
+        
+        Include:
+        - Appetizers
+        - Main Course
+        - Side Dishes
+        - Drinks
+        - Desserts
+        - AI-powered pairing suggestions
+        """
+        st.text_area("🍽️ Menu Recommendation:", get_ai_response(prompt), height=300)
+
+# 🥗 **Leftover Management**
+st.header("🥡 Leftover Management")
+
+leftover_type = st.selectbox("🥩 Leftover Type", ["Meat", "Vegetables", "Dairy", "Grains", "Fruits"])
+quantity = st.number_input("📦 Quantity (in kg)", min_value=0.1, value=1.0)
+shelf_life = st.number_input("⏳ Shelf Life (in days)", min_value=1, value=3)
+
+if st.button("♻️ Optimize Leftover Usage"):
+    if not all([leftover_type, quantity, shelf_life]):
+        st.error("⚠️ Please fill in all fields before generating a recommendation.")
+    else:
+        prompt = f"""
+        Optimize the management of:
+        - Leftover: {leftover_type}
+        - Quantity: {quantity} kg
+        - Shelf Life: {shelf_life} days
+        
+        Include:
+        - Creative leftover recipes
+        - Preservation techniques
+        - Donation suggestions
+        - Sustainability strategies
+        """
+        st.text_area("♻️ Leftover Optimization:", get_ai_response(prompt), height=300)
+
+# ✅ Footer
+st.write("🚀 Powered by Gemini 1.5 Pro with GenAI")
