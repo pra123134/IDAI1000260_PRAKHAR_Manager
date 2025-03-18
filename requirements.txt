@@ -1,6 +1,10 @@
 streamlit
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+requests
+google-generativeai
+streamlit
 google-generativeai
 datetime
-os
-google.auth
-requests
+
