@@ -3,3 +3,4 @@ google-generativeai
 datetime
 os
 google.auth
+import requests
