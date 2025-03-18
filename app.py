@@ -3,7 +3,7 @@ import datetime
 import google.generativeai as genai
 
 # Configure API Key
-API_KEY = "AIzaSyDqG_n-YApNnD5gNySZH9SyiJXW6zeStSU"  # Replace with your actual API key
+API_KEY = "YOUR_GEMINI_2_API_KEY"  # Replace with your actual API key
 genai.configure(api_key=API_KEY)
 
 def get_ai_response(prompt, fallback_message):
@@ -33,6 +33,7 @@ def get_event_recommendation():
     - AI-recommended event entertainment options
     - AI-suggested staff dress code for the theme
     - AI-driven social media engagement tips
+    - AI-generated promotional email template
     """
     return get_ai_response(prompt, "⚠️ AI response unavailable. Please try again later.")
 
@@ -62,6 +63,7 @@ def get_reservation_recommendation(occasion, people, cuisine_type, drink_type, b
     - AI-recommended music playlist
     - AI-optimized table arrangements for group dynamics
     - AI-driven guest experience enhancements
+    - AI-generated exclusive loyalty program offers
     """
     return get_ai_response(prompt, "⚠️ AI response unavailable. Please try again later.")
 
