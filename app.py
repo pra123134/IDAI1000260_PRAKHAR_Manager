@@ -1,9 +1,19 @@
+import os
 import streamlit as st
 import datetime
 import google.generativeai as genai
+import google.auth
+import requests
+
+# Install missing dependencies
+try:
+    import google.generativeai
+except ModuleNotFoundError:
+    os.system("pip install google-generativeai")
+    import google.generativeai as genai
 
 # Configure API Key
-API_KEY = "AIzaSyA6DUaLt9UymYHU3yz9NRCQVnX7dWcGDf4"  # Replace with your actual API key
+API_KEY = os.getenv("GEMINI_2_API_KEY", "YOUR_GEMINI_2_API_KEY")  # Use environment variable for security
 genai.configure(api_key=API_KEY)
 
 def get_ai_response(prompt, fallback_message):
