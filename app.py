@@ -1,20 +1,20 @@
 import os
 import streamlit as st
 import datetime
-import google.generativeai as genai
+import gemini_2_0_flash as genai
 import google.auth
 import requests
 
 # Install missing dependencies
 try:
-    import google.generativeai
+    import gemini_2_0_flash
 except ModuleNotFoundError:
     os.system("pip install google-generativeai")
     import google.generativeai as genai
 
 # Configure API Key
 API_KEY = os.getenv("GEMINI_2_API_KEY", "YOUR_GEMINI_2_API_KEY")  # Use environment variable for security
-genai.configure(api_key=API_KEY)
+genai.initialize(api_key=API_KEY)
 
 def get_ai_response(prompt, fallback_message):
     try:
@@ -96,3 +96,4 @@ if st.button("Generate Reservation Recommendation"):
     st.text_area("Reservation Recommendation:", get_reservation_recommendation(occasion, people, cuisine_type, drink_type, budget), height=300)
 
 st.write("\n🚀 Powered by Gemini AI")
+
