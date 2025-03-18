@@ -4,17 +4,44 @@ import datetime
 import google.generativeai as genai
 import google.auth
 import requests
+import google.generativeai as genai
+
+
+# Set up the API key
+GOOGLE_API_KEY = "AIzaSyBtZt65MSLbrPpitZ61NEoN71aELM4SiSI"
+genai.configure(api_key=GOOGLE_API_KEY)
+
+
+def upload_to_gemini(path, mime_type=None):
+    """Uploads the given file to Gemini."""
+    try:
+        file = genai.upload_file(path, mime_type=mime_type)
+        print(f"Uploaded file '{file.display_name}' as: {file.uri}")
+        return file
+    except Exception as e:
+        print(f"Error uploading file: {e}")
+        return None
+
+
+# Create the model
+generation_config = {
+    "temperature": 1,
+    "top_p": 0.95,
+    "top_k": 64,
+    "max_output_tokens": 8192,
+}
+
+
+model = genai.GenerativeModel(
+    model_name="gemini-1.5-pro",
+    generation_config=generation_config)
 
 # Install missing dependencies
-try:
-    import gemini_1_5_pro
-except ModuleNotFoundError:
-    os.system("pip install google-generativeai")
-    import google.generativeai as genai
+
 
 # Configure API Key
-API_KEY = os.getenv("AIzaSyBtZt65MSLbrPpitZ61NEoN71aELM4SiSI")  # Use environment variable for security
-genai.initialize(api_key=API_KEY)
+#API_KEY = os.getenv("AIzaSyBtZt65MSLbrPpitZ61NEoN71aELM4SiSI")  # Use environment variable for security
+#genai.initialize(api_key=API_KEY)
 
 def get_ai_response(prompt, fallback_message):
     try:
