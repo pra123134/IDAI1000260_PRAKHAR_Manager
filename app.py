@@ -3,7 +3,7 @@ import datetime
 import google.generativeai as genai
 
 # Configure API Key
-API_KEY = "YOUR_GEMINI_2_API_KEY"  # Replace with your actual API key
+API_KEY = "AIzaSyA6DUaLt9UymYHU3yz9NRCQVnX7dWcGDf4"  # Replace with your actual API key
 genai.configure(api_key=API_KEY)
 
 def get_ai_response(prompt, fallback_message):
