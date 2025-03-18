@@ -1,24 +1,24 @@
 import os
 import streamlit as st
 import datetime
-import gemini_2_0_flash as genai
+  import google.generativeai as genai
 import google.auth
 import requests
 
 # Install missing dependencies
 try:
-    import gemini_2_0_flash
+    import gemini_1_5_pro
 except ModuleNotFoundError:
     os.system("pip install google-generativeai")
     import google.generativeai as genai
 
 # Configure API Key
-API_KEY = os.getenv("GEMINI_2_API_KEY", "YOUR_GEMINI_2_API_KEY")  # Use environment variable for security
+API_KEY = os.getenv("AIzaSyBtZt65MSLbrPpitZ61NEoN71aELM4SiSI")  # Use environment variable for security
 genai.initialize(api_key=API_KEY)
 
 def get_ai_response(prompt, fallback_message):
     try:
-        model = genai.GenerativeModel("gemini-2-flash")
+        model = genai.GenerativeModel("gemini-1.5-pro")
         response = model.generate_content(prompt)
         return response.text.strip() if hasattr(response, "text") and response.text.strip() else fallback_message
     except Exception as e:
