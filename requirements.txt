@@ -4,10 +4,3 @@ google-auth-oauthlib
 google-auth-httplib2
 requests
 google-generativeai
-streamlit
-google-generativeai
-datetime
-google.generativeai
-firebase_admin
-firebase_admin 
-PIL
